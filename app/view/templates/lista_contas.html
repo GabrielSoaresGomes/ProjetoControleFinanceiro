@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<a class="btn btn-primary adicionar_conta">Adicionar uma conta</a>
+<div class="d-none form-contas d-flex justify-content-center">
+  {% include 'contas_form.html' %}
+</div>
+<table>
+</table>
+
+<script>
+  $(document).ready(function () {
+
+    $('.adicionar_conta').click(function () {
+      $('.form-contas').toggleClass('d-none')
+      $('.form_contas input').val('')
+      $('.form_contas input').prop('checked', false)
+      $('input.numero_repeticao').prop('required', false)
+      $('.numero_repeticao').addClass("d-none")
+    })
+
+    $('#recorrente').change(function () { 
+      $('.numero_repeticao').toggleClass("d-none")
+      if ( !$('input.numero_repeticao').prop('required')) {
+        $('input.numero_repeticao').prop('required', true)
+      } else {
+        $('input.numero_repeticao').prop('required', false)
+      }
+     
+      
+    })
+
+    $('.form_contas').submit(function (e) { 
+        e.preventDefault()
+        $.ajax({
+          data: {
+            data_vencimento
+          }
+        })
+    })
+
+  })
+  
+</script>
+
+{% endblock content %}
