@@ -15,7 +15,7 @@
       <th class="text-center">DATA PAGAMENTO</th>
     </tr>
   </thead>
-  <tbody>
+  <tbody class="tbody-contas">
     {% for conta in contas %}
       <tr class="
       {% if conta.status == 'À pagar' %} bg-info 
@@ -73,8 +73,69 @@
             descricao: $("#descricao").val()
           },
           type: "POST",
-          url: "{{url_for('lista_contas')}}"
+          url: "{{url_for('lista_contas')}}",
+        }).done((data) => {
+          atualizar_tabela_contas()
         })
+       
+        function zerar_campos_contas() {
+          $('#data_vencimento').val("")
+          $("#valor").val("")
+          $("#recorrente").val("")
+          $("#numero_repeticao").val("")
+          $("#descricao").val("")
+        }
+
+        function atualizar_tabela_contas() { 
+          let data_vencimento = $('#data_vencimento').val()
+          let valor = $("#valor").val()
+          let descricao = $("#descricao").val()
+          let recorrente = $("#recorrente").val()
+          
+          let nova_data = new Date(data_vencimento)
+          let data_hoje = new Date()
+          if (recorrente == "true") {
+            var repeticoes = $("#numero_repeticao").val()
+          } else {
+            var repeticoes = 1
+          }
+          repeticoes = Number(repeticoes)
+          zerar_campos_contas()
+          for (let count = 0; count < repeticoes; count ++ ) {
+            let diff = moment(nova_data,"DD/MM/YYYY").diff(moment(data_hoje,"DD/MM/YYYY"));
+            let dias_diferenca = moment.duration(diff).asDays();
+
+            let status_conta = "À pagar"
+            let cor = "bg-info"
+            if (Number(dias_diferenca) <= 0) {
+              status_conta = "Vencida"
+              cor = "bg-danger"
+            } else if (Number(dias_diferenca) <= 3) {
+              status_conta = "Vencendo"
+              cor = "bg-warning"
+            }
+            let ano = nova_data.getFullYear()
+            let mes = nova_data.getMonth()+1
+            mes = mes < 10 ? '0'+String(mes)  : mes = mes
+            let dia = nova_data.getDay()
+            dia = dia < 10 ? '0'+String(dia)  : dia = dia
+            let data_string = `${ano}-${mes}-${dia}`
+            let new_tr = `<tr class=" ${cor} ">
+                            <td>${data_string}</td>
+                            <td>${descricao}</td>
+                            <td>R$${valor}</td>
+                            <td>${status_conta}</td>
+                            <td>-</td>
+                          </tr>`
+            $('.tbody-contas').append(new_tr)
+            console.log(nova_data)
+            let mes_atual = nova_data.getMonth()
+            nova_data = new Date(nova_data.setMonth(mes_atual + 1))
+          }
+          
+        }
+
+        
     })
 
   })

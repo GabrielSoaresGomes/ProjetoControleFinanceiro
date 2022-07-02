@@ -9,7 +9,7 @@ def lista_contas():
   
   if request.method == "POST":
     data_vencimento = request.form.get('data_vencimento', '')
-    valor = request.form.get('valor', '')
+    valor = request.form.get('valor', 0)
     recorrente = request.form.get('recorrente', False)
     recorrente = False if recorrente == 'false' else True
 

@@ -26,10 +26,12 @@ class ContaDAO:
       conta.status = status = "Vencendo"
 
     if conta.recorrente:
+      nova_data = data_vencimento
       for repeticao in range(int(conta.numero_repeticao)):
         db.session.add(conta)
-        nova_data = datetime.strptime(data_vencimento, "%Y-%m-%d")
+        nova_data = datetime.strptime(nova_data, "%Y-%m-%d")
         nova_data = nova_data + relativedelta(months=1)
+        print(nova_data)
         nova_data = nova_data.strftime("%Y-%m-%d")
         conta = Conta(data_vencimento = nova_data, data_pagamento='-', valor = conta.valor, recorrente = conta.recorrente, numero_repeticao = conta.numero_repeticao, descricao = conta.descricao, status=status)
     else:
