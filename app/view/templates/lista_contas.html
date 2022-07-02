@@ -32,10 +32,21 @@
 
     $('.form_contas').submit(function (e) { 
         e.preventDefault()
+        if ($("#recorrente").prop('checked')) {
+          $(this).val(true)
+        } else {
+          $(this).val(false)
+        }
         $.ajax({
           data: {
-            data_vencimento
-          }
+            data_vencimento: $('#data_vencimento').val(),
+            valor: $("#valor").val(),
+            recorrente: $("#recorrente").val(),
+            numero_repeticao: $("#numero_repeticao").val(),
+            descricao: $("#descricao").val()
+          },
+          type: "POST",
+          url: "{{url_for('adicionar_conta')}}"
         })
     })
 
