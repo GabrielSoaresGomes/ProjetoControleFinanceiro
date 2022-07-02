@@ -1,0 +1,15 @@
+For Linux, Mac, Linux Subsystem for Windows, Git Bash on Windows, etc.:
+
+export FLASK_APP=myapp
+export FLASK_ENV=development
+flask run
+
+-------------------------------------------------------
+For Windows CMD, use set instead of export:
+
+set FLASK_ENV=development
+
+-------------------------------------------------------
+For PowerShell, use $env:
+
+$env:FLASK_ENV = "development"

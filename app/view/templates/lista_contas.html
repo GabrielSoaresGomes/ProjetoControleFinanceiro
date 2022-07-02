@@ -5,11 +5,33 @@
 <div class="d-none form-contas d-flex justify-content-center">
   {% include 'contas_form.html' %}
 </div>
-<table>
+<table id="contas_table">
+  <thead>
+    <tr>
+      <th>DATA</th>
+      <th>DESCRIÇÃO</th>
+      <th>VALOR</th>
+      <th>STATUS</th>
+      <th>DATA PAGAMENTO</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for conta in contas %}
+      <tr>
+        <td>{{conta.data_vencimento}}</td>
+        <td>{{conta.descricao}}</td>
+        <td>R${{conta.valor}}</td>
+        <td>{% if conta.data_pagamento != None %}PAGO{% else %} À PAGAR{% endif %}</td>
+        <td>conta</td>
+      </tr>
+    {% endfor %}
+  </tbody>
 </table>
 
 <script>
   $(document).ready(function () {
+
+    $('#contas_table').DataTable();
 
     $('.adicionar_conta').click(function () {
       $('.form-contas').toggleClass('d-none')
@@ -21,22 +43,22 @@
 
     $('#recorrente').change(function () { 
       $('.numero_repeticao').toggleClass("d-none")
+      $('.numero_repeticao').val("")
       if ( !$('input.numero_repeticao').prop('required')) {
         $('input.numero_repeticao').prop('required', true)
       } else {
         $('input.numero_repeticao').prop('required', false)
-      }
-     
-      
+      }      
     })
 
     $('.form_contas').submit(function (e) { 
         e.preventDefault()
         if ($("#recorrente").prop('checked')) {
-          $(this).val(true)
+          $("#recorrente").val(true)
         } else {
-          $(this).val(false)
+          $("#recorrente").val(false)
         }
+        console.log($("#recorrente").val())
         $.ajax({
           data: {
             data_vencimento: $('#data_vencimento').val(),
@@ -46,7 +68,7 @@
             descricao: $("#descricao").val()
           },
           type: "POST",
-          url: "{{url_for('adicionar_conta')}}"
+          url: "{{url_for('lista_contas')}}"
         })
     })
 
