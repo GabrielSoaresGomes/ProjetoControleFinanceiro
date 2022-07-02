@@ -14,7 +14,7 @@ def lista_contas():
 
     numero_repeticao = request.form.get('numero_repeticao', '')
     descricao = request.form.get('descricao', '')
-    nova_conta = Conta(data_vencimento = data_vencimento, valor = valor, recorrente = recorrente, numero_repeticao = numero_repeticao, descricao = descricao)
-    contaDAO.adicionar_conta(nova_conta)
+
+    contaDAO.adicionar_conta(data_vencimento = data_vencimento, data_pagamento='-', valor = valor, recorrente = recorrente, numero_repeticao = numero_repeticao, descricao = descricao, status='À pagar')
   contas = contaDAO.listar_contas()
   return render_template('lista_contas.html', title="Lista de Contas", contas=contas)

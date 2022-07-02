@@ -8,21 +8,26 @@
 <table id="contas_table">
   <thead>
     <tr>
-      <th>DATA</th>
-      <th>DESCRIÇÃO</th>
-      <th>VALOR</th>
-      <th>STATUS</th>
-      <th>DATA PAGAMENTO</th>
+      <th class="text-center">DATA</th>
+      <th class="text-center">DESCRIÇÃO</th>
+      <th class="text-center">VALOR</th>
+      <th class="text-center">STATUS</th>
+      <th class="text-center">DATA PAGAMENTO</th>
     </tr>
   </thead>
   <tbody>
     {% for conta in contas %}
-      <tr>
+      <tr class="
+      {% if conta.status == 'À pagar' %} bg-info 
+      {% elif conta.status == 'Paga' %} bg-success
+      {% elif conta.status == 'Vencida' %} bg-danger
+      {% elif conta.status == 'Vencendo' %} bg-warning
+      {% endif %}">
         <td>{{conta.data_vencimento}}</td>
         <td>{{conta.descricao}}</td>
         <td>R${{conta.valor}}</td>
-        <td>{% if conta.data_pagamento != None %}PAGO{% else %} À PAGAR{% endif %}</td>
-        <td>conta</td>
+        <td>{{conta.status}}</td>
+        <td>{{ conta.data_pagamento }}</td>
       </tr>
     {% endfor %}
   </tbody>
