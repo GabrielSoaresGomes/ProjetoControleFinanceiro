@@ -11,3 +11,8 @@
   cursor: pointer;
   color: red;
 }
+
+.hover-amarelo:hover, .hover-amarelo *:hover {
+  cursor: pointer;
+  color: yellow;
+}

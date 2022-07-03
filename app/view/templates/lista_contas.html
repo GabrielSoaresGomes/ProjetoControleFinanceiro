@@ -1,6 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<div class="form-edit d-none">
+{% include 'contas_form_edit.html' %}
+</div>
+
 <a class="btn btn-primary adicionar_conta">Adicionar uma conta</a>
 <div class="d-none form-contas d-flex justify-content-center">
   {% include 'contas_form.html' %}
@@ -25,11 +30,19 @@
       {% elif conta.status == 'Vencida' %} bg-danger
       {% elif conta.status == 'Vencendo' %} bg-warning
       {% endif %}">
-        <td><a data-descricao="{{ conta.descricao }}"
+        <td>
+          <a data-descricao="{{ conta.descricao }}"
           data-id_conta="{{ conta.id }}"
           data-status = "{{ conta.status }}"
           data-data_vencimento="{{conta.data_vencimento}}"
-          data-valor="{{conta.valor}}" class="deletar_conta text-dark hover-vermelho"><i class="bi bi-trash-fill"></i></a></td>
+          data-valor="{{conta.valor}}" class="deletar_conta text-dark hover-vermelho"><i class="bi bi-trash-fill"></i></a>
+
+          <a data-descricao="{{ conta.descricao }}"
+          data-id_conta="{{ conta.id }}"
+          data-status = "{{ conta.status }}"
+          data-data_vencimento="{{conta.data_vencimento}}"
+          data-valor="{{conta.valor}}" class="editar_conta text-dark hover-amarelo" ><i class="bi bi-pencil-square"></i></a>
+        </td>
         <td>{{conta.data_vencimento}}</td>
         <td>{{conta.descricao}}</td>
         <td>R${{conta.valor}}</td>
@@ -39,7 +52,8 @@
                data-id_conta="{{ conta.id }}"
                data-status = "{{ conta.status }}"
                data-data_vencimento="{{conta.data_vencimento}}"
-               data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a></td>
+               data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a>
+        </td>
       </tr>
     {% endfor %}
   </tbody>
