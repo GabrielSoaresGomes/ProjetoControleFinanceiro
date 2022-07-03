@@ -22,6 +22,12 @@ class ContaDAO:
     lista_contas_mes.sort(key=lambda x: x.data_vencimento, reverse=False)
     return lista_contas_mes
 
+  def valor_contas_mes(self):
+    contas_mes = self.lista_contas_mes()
+    valor_mes = 0
+    for conta in contas_mes:
+      valor_mes += float(conta.valor)
+    return f"{valor_mes:.2f}"
 
   def adicionar_conta(self, data_vencimento, data_pagamento, valor, recorrente, numero_repeticao, descricao, status):
     conta = Conta(data_vencimento = data_vencimento, data_pagamento='-', valor = valor, recorrente = recorrente, numero_repeticao = numero_repeticao, descricao = descricao, status=status)
