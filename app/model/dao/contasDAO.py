@@ -1,5 +1,3 @@
-from calendar import month
-
 from sqlalchemy import null
 from app.model.database.db_main import db, Conta
 from datetime import datetime, timedelta
@@ -12,6 +10,17 @@ class ContaDAO:
   def listar_contas(self):
     contas = Conta.query.all()
     return contas
+
+  def lista_contas_mes(self):
+    mes_atual = int(datetime.now().month)
+    contas = Conta.query.all()
+    lista_contas_mes = []
+    for conta in contas:
+      mes_conta = int(conta.data_vencimento.split('-')[1])
+      if mes_conta  == mes_atual:
+        lista_contas_mes.append(conta)
+    return lista_contas_mes
+
 
   def adicionar_conta(self, data_vencimento, data_pagamento, valor, recorrente, numero_repeticao, descricao, status):
     conta = Conta(data_vencimento = data_vencimento, data_pagamento='-', valor = valor, recorrente = recorrente, numero_repeticao = numero_repeticao, descricao = descricao, status=status)
@@ -54,3 +63,11 @@ class ContaDAO:
         conta.status = "Vencendo"
       else:
         conta.status = "À pagar"
+    db.session.commit()
+
+  def pagar_conta(self, id_conta):
+    id_conta = str(id_conta)
+    conta = Conta.query.filter_by(id=id_conta).first()
+    conta.status = "Paga"
+    conta.data_pagamento = datetime.today().strftime('%Y-%m-%d')
+    db.session.commit()

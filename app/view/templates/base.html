@@ -13,6 +13,8 @@
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-0evHe/X+R7YkIZDRvuzKMRqM+OrBnVFBL6DOitfPri4tjfHxaWutUpFmBp4vmVor" crossorigin="anonymous">
   <!-- BOOTSTRAP JavaScript Bundle with Popper -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.0-beta1/dist/js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+  <!-- BOOTSTRAP ICONS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.3/font/bootstrap-icons.css">
 
   <!-- DATATABLES -->
   <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.12.1/css/jquery.dataTables.css">
@@ -40,6 +42,25 @@
     {% endblock %}
   </div>
 
-  
+  <script>
+    $('.pagar-conta').click(function() {
+      let informacoes_conta = [$(this).attr('data-descricao'), $(this).attr('data-data_vencimento'), $(this).attr('data-valor')]
+      let id_conta = $(this).attr('data-id_conta')
+      let confirmar = window.confirm(`Confirmar pagamento? \nConta: ${informacoes_conta[0]} \nData: ${informacoes_conta[1]} \nValor: R$${informacoes_conta[2]} `)
+      
+      if (confirmar) {
+        $.ajax({
+          data: {
+            id_conta: id_conta,
+          },
+          type: "GET",
+          url: "{{ url_for('pagar_conta') }}"
+        }).done(() => {
+          window.location.href = "{{url_for('lista_contas')}}"
+        }) 
+      }
+    })
+  </script>
+
 </body>
 </html>

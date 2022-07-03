@@ -2,5 +2,83 @@
 
 {% block content %}
 
+<div class="container-all" style="display: grid; grid-template-columns: repeat(3, auto);">
+  <div class="container-contas-mes text-start">
+    <h4>Contas este mês</h4>
+    <div class="card-container d-flex flex-column align-items-start">
+      {% for conta in contas_mes %}
+      <div class="card m-2 
+        {% if conta.status == 'À pagar' %} bg-info 
+        {% elif conta.status == 'Paga' %} bg-success
+        {% elif conta.status == 'Vencida' %} bg-danger
+        {% elif conta.status == 'Vencendo' %} bg-warning
+        {% endif %}">
+        <div class="card-body">
+          <h5 class="card-title">{{ conta.descricao }}</h5>
+          <p class="card-text">Data de Vencimento: {{ conta.data_vencimento }}</p>
+          <p class="card-text">Valor: R${{conta.valor}}</p>
+          <p class="card-text">Situação: {{conta.status}}</p>
+          <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
+            data-id_conta="{{ conta.id }}"
+            data-data_vencimento="{{conta.data_vencimento}}"
+            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+        </div>
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+  <div class="container-contas-mes text-start">
+    
+    <div class="card-container d-flex flex-column align-items-start">
+      <h4>Contas este mês</h4>
+      {% for conta in contas_mes %}
+      <div class="card m-2 
+        {% if conta.status == 'À pagar' %} bg-info 
+        {% elif conta.status == 'Paga' %} bg-success
+        {% elif conta.status == 'Vencida' %} bg-danger
+        {% elif conta.status == 'Vencendo' %} bg-warning
+        {% endif %}">
+        <div class="card-body">
+          <h5 class="card-title">{{ conta.descricao }}</h5>
+          <p class="card-text">Data de Vencimento: {{ conta.data_vencimento }}</p>
+          <p class="card-text">Valor: R${{conta.valor}}</p>
+          <p class="card-text">Situação: {{conta.status}}</p>
+          <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
+            data-id_conta="{{ conta.id }}"
+            data-data_vencimento="{{conta.data_vencimento}}"
+            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+        </div>
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+  <div class="container-contas-mes text-start">
+    <h4>Contas este mês</h4>
+    <div class="card-container d-flex flex-column align-items-start">
+      {% for conta in contas_mes %}
+      <div class="card m-2 
+        {% if conta.status == 'À pagar' %} bg-info 
+        {% elif conta.status == 'Paga' %} bg-success
+        {% elif conta.status == 'Vencida' %} bg-danger
+        {% elif conta.status == 'Vencendo' %} bg-warning
+        {% endif %}">
+        <div class="card-body">
+          <h5 class="card-title">{{ conta.descricao }}</h5>
+          <p class="card-text">Data de Vencimento: {{ conta.data_vencimento }}</p>
+          <p class="card-text">Valor: R${{conta.valor}}</p>
+          <p class="card-text">Situação: {{conta.status}}</p>
+          <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
+            data-id_conta="{{ conta.id }}"
+            data-data_vencimento="{{conta.data_vencimento}}"
+            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+        </div>
+      </div>
+      {% endfor %}
+      
+    </div>
+  </div>
+</div>
 
 {% endblock content %}

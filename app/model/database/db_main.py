@@ -16,4 +16,4 @@ class Conta(db.Model):
   status = db.Column(db.Text()) # Alterar de acordo com o vencimento e pagamento. status: À pagar(azul), Paga(verde), Vencida(vermelha) ou Vencendo(amarela)
 
   def __repr__(self):
-        return f'<Conta {self.data_vencimento}>'
+        return f'<Conta {self.descricao} {self.data_vencimento}>'

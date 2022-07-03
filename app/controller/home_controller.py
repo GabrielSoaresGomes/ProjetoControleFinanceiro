@@ -1,7 +1,11 @@
 from flask import render_template
-
 from app import app
+
+from app.model.dao import contaDAO
 
 @app.route('/')
 def index():
-  return render_template("home.html", title="Home")
+  contaDAO.verificar_status()
+  contas_mes = contaDAO.lista_contas_mes()
+  contaDAO.verificar_status()
+  return render_template("home.html", title="Home", contas_mes=contas_mes)

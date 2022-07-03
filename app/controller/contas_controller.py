@@ -6,7 +6,7 @@ from app.model.database.db_main import db, Conta
 
 @app.route("/contas", methods=['POST', "GET"])
 def lista_contas():
-  
+  contaDAO.verificar_status()
   if request.method == "POST":
     data_vencimento = request.form.get('data_vencimento', '')
     valor = request.form.get('valor', 0)
@@ -20,3 +20,9 @@ def lista_contas():
   contas = contaDAO.listar_contas()
   contaDAO.verificar_status()
   return render_template('lista_contas.html', title="Lista de Contas", contas=contas)
+
+@app.route("/contas/pagar", methods=["GET"])
+def pagar_conta():
+  id_conta = request.args.get('id_conta', '')
+  contaDAO.pagar_conta(id_conta)
+  return jsonify()

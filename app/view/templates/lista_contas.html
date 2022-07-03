@@ -13,6 +13,7 @@
       <th class="text-center">VALOR</th>
       <th class="text-center">STATUS</th>
       <th class="text-center">DATA PAGAMENTO</th>
+      <th class="text-center">PAGAR</th>
     </tr>
   </thead>
   <tbody class="tbody-contas">
@@ -28,6 +29,10 @@
         <td>R${{conta.valor}}</td>
         <td>{{conta.status}}</td>
         <td>{{ conta.data_pagamento }}</td>
+        <td><a data-descricao="{{ conta.descricao }}"
+               data-id_conta="{{ conta.id }}"
+               data-data_vencimento="{{conta.data_vencimento}}"
+               data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -128,7 +133,6 @@
                             <td>-</td>
                           </tr>`
             $('.tbody-contas').append(new_tr)
-            console.log(nova_data)
             let mes_atual = nova_data.getMonth()
             nova_data = new Date(nova_data.setMonth(mes_atual + 1))
           }
