@@ -26,3 +26,10 @@ def pagar_conta():
   id_conta = request.args.get('id_conta', '')
   contaDAO.pagar_conta(id_conta)
   return jsonify()
+
+@app.route("/contas/deletar", methods=["GET"])
+def deletar_conta():
+  id_conta = request.args.get("id_conta", "")
+  contaDAO.deletar_conta(id_conta)
+
+  return jsonify()

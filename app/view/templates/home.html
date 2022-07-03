@@ -20,8 +20,9 @@
           <p class="card-text">Situação: {{conta.status}}</p>
           <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
             data-id_conta="{{ conta.id }}"
+            data-status = "{{ conta.status }}"
             data-data_vencimento="{{conta.data_vencimento}}"
-            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+            data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a></p>
         </div>
       </div>
       {% endfor %}
@@ -47,7 +48,7 @@
           <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
             data-id_conta="{{ conta.id }}"
             data-data_vencimento="{{conta.data_vencimento}}"
-            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+            data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a></p>
         </div>
       </div>
       {% endfor %}
@@ -72,7 +73,7 @@
           <p class="card-text text-end"><a data-descricao="{{ conta.descricao }}"
             data-id_conta="{{ conta.id }}"
             data-data_vencimento="{{conta.data_vencimento}}"
-            data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></p>
+            data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a></p>
         </div>
       </div>
       {% endfor %}

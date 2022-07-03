@@ -6,3 +6,8 @@
 .pagar-conta {
   cursor: pointer;
 }
+
+.hover-vermelho:hover, .hover-vermelho *:hover {
+  cursor: pointer;
+  color: red;
+}

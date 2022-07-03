@@ -8,6 +8,7 @@
 <table id="contas_table">
   <thead>
     <tr>
+      <th></th>
       <th class="text-center">DATA</th>
       <th class="text-center">DESCRIÇÃO</th>
       <th class="text-center">VALOR</th>
@@ -24,6 +25,11 @@
       {% elif conta.status == 'Vencida' %} bg-danger
       {% elif conta.status == 'Vencendo' %} bg-warning
       {% endif %}">
+        <td><a data-descricao="{{ conta.descricao }}"
+          data-id_conta="{{ conta.id }}"
+          data-status = "{{ conta.status }}"
+          data-data_vencimento="{{conta.data_vencimento}}"
+          data-valor="{{conta.valor}}" class="deletar_conta text-dark hover-vermelho"><i class="bi bi-trash-fill"></i></a></td>
         <td>{{conta.data_vencimento}}</td>
         <td>{{conta.descricao}}</td>
         <td>R${{conta.valor}}</td>
@@ -31,8 +37,9 @@
         <td>{{ conta.data_pagamento }}</td>
         <td><a data-descricao="{{ conta.descricao }}"
                data-id_conta="{{ conta.id }}"
+               data-status = "{{ conta.status }}"
                data-data_vencimento="{{conta.data_vencimento}}"
-               data-valor="{{conta.valor}}" class="pagar-conta" ><i class="bi bi-check2-square"></i></a></td>
+               data-valor="{{conta.valor}}" class="pagar-conta" >{% if conta.status != 'Paga' %}<i class="bi bi-check2-square"></i>{% endif %}</a></td>
       </tr>
     {% endfor %}
   </tbody>
@@ -41,7 +48,26 @@
 <script>
   $(document).ready(function () {
 
-    $('#contas_table').DataTable();
+    $('#contas_table').DataTable({
+      order: [[1, 'asc']]
+    });
+
+    $('.deletar_conta').click(function () {
+      let informacoes_conta = [$(this).attr('data-descricao'), $(this).attr('data-data_vencimento'), $(this).attr('data-valor')]
+      let id_conta = $(this).attr('data-id_conta')
+      let confirmar = window.confirm(`Certeza que deseja DELETAR a conta? \nConta: ${informacoes_conta[0]} \nData: ${informacoes_conta[1]} \nValor: R$${informacoes_conta[2]} `)
+      if (confirmar) {
+        $.ajax({
+          data: {
+            id_conta: id_conta,
+          },
+          type: "GET",
+          url: "{{url_for('deletar_conta')}}"
+        }).done(() => {
+          document.location.reload()
+        })
+      }
+    })
 
     $('.adicionar_conta').click(function () {
       $('.form-contas').toggleClass('d-none')
@@ -80,7 +106,7 @@
           type: "POST",
           url: "{{url_for('lista_contas')}}",
         }).done((data) => {
-          atualizar_tabela_contas()
+          document.location.reload()
         })
        
         function zerar_campos_contas() {
@@ -90,58 +116,7 @@
           $("#numero_repeticao").val("")
           $("#descricao").val("")
         }
-
-        function atualizar_tabela_contas() { 
-          let data_vencimento = $('#data_vencimento').val()
-          let valor = $("#valor").val()
-          let descricao = $("#descricao").val()
-          let recorrente = $("#recorrente").val()
-          
-          let nova_data = new Date(data_vencimento)
-          let data_hoje = new Date()
-          if (recorrente == "true") {
-            var repeticoes = $("#numero_repeticao").val()
-          } else {
-            var repeticoes = 1
-          }
-          repeticoes = Number(repeticoes)
-          zerar_campos_contas()
-          for (let count = 0; count < repeticoes; count ++ ) {
-            let diff = moment(nova_data,"DD/MM/YYYY").diff(moment(data_hoje,"DD/MM/YYYY"));
-            let dias_diferenca = moment.duration(diff).asDays();
-
-            let status_conta = "À pagar"
-            let cor = "bg-info"
-            if (Number(dias_diferenca) <= 0) {
-              status_conta = "Vencida"
-              cor = "bg-danger"
-            } else if (Number(dias_diferenca) <= 3) {
-              status_conta = "Vencendo"
-              cor = "bg-warning"
-            }
-            let ano = nova_data.getFullYear()
-            let mes = nova_data.getMonth()+1
-            mes = mes < 10 ? '0'+String(mes)  : mes = mes
-            let dia = nova_data.getDay()
-            dia = dia < 10 ? '0'+String(dia)  : dia = dia
-            let data_string = `${ano}-${mes}-${dia}`
-            let new_tr = `<tr class=" ${cor} ">
-                            <td>${data_string}</td>
-                            <td>${descricao}</td>
-                            <td>R$${valor}</td>
-                            <td>${status_conta}</td>
-                            <td>-</td>
-                          </tr>`
-            $('.tbody-contas').append(new_tr)
-            let mes_atual = nova_data.getMonth()
-            nova_data = new Date(nova_data.setMonth(mes_atual + 1))
-          }
-          
-        }
-
-        
     })
-
   })
   
 </script>

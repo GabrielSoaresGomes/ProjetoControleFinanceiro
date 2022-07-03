@@ -19,6 +19,7 @@ class ContaDAO:
       mes_conta = int(conta.data_vencimento.split('-')[1])
       if mes_conta  == mes_atual:
         lista_contas_mes.append(conta)
+    lista_contas_mes.sort(key=lambda x: x.data_vencimento, reverse=False)
     return lista_contas_mes
 
 
@@ -45,6 +46,14 @@ class ContaDAO:
         conta = Conta(data_vencimento = nova_data, data_pagamento='-', valor = conta.valor, recorrente = conta.recorrente, numero_repeticao = conta.numero_repeticao, descricao = conta.descricao, status=status)
     else:
       db.session.add(conta)
+    db.session.commit()
+
+  def deletar_conta(self, id_conta):
+    id_conta = str(id_conta)
+    print(id_conta)
+    conta = Conta.query.filter_by(id=id_conta).first()
+    print(conta)
+    db.session.delete(conta)
     db.session.commit()
 
   def verificar_status(self):
